@@ -24,4 +24,12 @@ const validateNewUser = (req, res, next) => {
   next();
 };
 
-module.exports = { validateLogin, validateNewUser };
+const validateCategoryBody = (req, res, next) => {
+  const { name } = req.body;
+  if (!name) {
+    return res.status(400).send({ message: '"name" is required' });
+  }
+  next();
+};
+
+module.exports = { validateLogin, validateNewUser, validateCategoryBody };
