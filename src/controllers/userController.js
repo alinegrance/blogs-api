@@ -37,9 +37,19 @@ const createUser = async (req, res) => {
   res.status(201).send({ token });
 };
 
-const getAll = async (req, res) => {
+const getAll = async (_req, res) => {
   const users = await userService.getAll();
   return res.status(200).send(users);
 };
 
-module.exports = { login, createUser, getAll };
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const user = await userService.getById(id);
+  
+  if (!user) {
+    return res.status(404).send({ message: 'User does not exist' });
+  }
+  res.status(200).send(user);
+};
+
+module.exports = { login, createUser, getAll, getById };

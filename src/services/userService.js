@@ -6,9 +6,9 @@ const getByEmailAndPassword = async (email, password) => {
 };
 
 const getById = async (id) => {
-  const user = await User.findByPk(id);
-
-  return user;
+  const { dataValues } = await User.findByPk(id);
+  delete dataValues.password;
+  return dataValues;
 };
 
 const getAll = async () => {
