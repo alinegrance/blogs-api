@@ -7,4 +7,6 @@ const router = express.Router();
 
 router.post('/', validadeJWT, validateCategoryBody, categoryController.createCategory);
 
+router.get('/', validadeJWT, categoryController.getAll);
+
 module.exports = router;
