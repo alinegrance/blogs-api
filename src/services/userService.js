@@ -5,6 +5,19 @@ const getByEmailAndPassword = async (email, password) => {
   return user;
 };
 
+const getById = async (id) => {
+  const user = await User.findByPk(id);
+
+  return user;
+};
+
+const getAll = async () => {
+  const response = await User.findAll();
+  const users = response
+  .map(({ id, displayName, email, image }) => ({ id, displayName, email, image }));
+  return users;
+};
+
 const createUser = async (displayName, email, password, image) => {
   try {
     const newUser = await User.create({ displayName, email, password, image });
@@ -14,4 +27,4 @@ const createUser = async (displayName, email, password, image) => {
   }
 };
 
-module.exports = { getByEmailAndPassword, createUser };
+module.exports = { getByEmailAndPassword, getById, getAll, createUser };

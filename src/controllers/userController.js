@@ -2,9 +2,9 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userService');
 
-const secret = process.env.JWT_SECRET || 'secretToken';
+const secret = process.env.JWT_SECRET;
 const jwtConfig = {
-  expiresIn: '1h',
+  expiresIn: '7d',
   algorithm: 'HS256',
 };
 
@@ -37,4 +37,9 @@ const createUser = async (req, res) => {
   res.status(201).send({ token });
 };
 
-module.exports = { login, createUser };
+const getAll = async (req, res) => {
+  const users = await userService.getAll();
+  return res.status(200).send(users);
+};
+
+module.exports = { login, createUser, getAll };
