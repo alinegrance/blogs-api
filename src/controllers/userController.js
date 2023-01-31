@@ -55,4 +55,10 @@ const getById = async (req, res) => {
   res.status(200).send(user);
 };
 
-module.exports = { login, createUser, getAll, getById };
+const deleteUser = async (req, res) => {
+  const userId = req.user.id;
+  await userService.deleteUser(userId);
+  return res.sendStatus(204);
+};
+
+module.exports = { login, createUser, getAll, getById, deleteUser };
