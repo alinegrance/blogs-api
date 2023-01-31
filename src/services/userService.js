@@ -1,3 +1,4 @@
+const { UniqueConstraintError } = require('sequelize');
 const { User } = require('../models');
 
 const getByEmailAndPassword = async (email, password) => {
@@ -27,7 +28,12 @@ const createUser = async (displayName, email, password, image) => {
     const newUser = await User.create({ displayName, email, password, image });
     return newUser;
   } catch (err) {
-    return err.errors[0].type;
+    console.log(err);
+    if (err instanceof UniqueConstraintError) {
+      throw Error('user_already_exists');
+    } else {
+      throw Error('unknown');
+    }
   }
 };
 

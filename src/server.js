@@ -3,6 +3,7 @@ const app = require('./app');
 const loginRouter = require('./routes/loginRoutes');
 const userRouter = require('./routes/userRoutes');
 const categoriesRouter = require('./routes/categoriesRoutes');
+const postRouter = require('./routes/postRoutes');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -15,5 +16,6 @@ app.get('/', (_request, response) => {
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 app.use('/categories', categoriesRouter);
+app.use('/post', postRouter);
 
 app.listen(port, () => console.log('ouvindo porta', port));

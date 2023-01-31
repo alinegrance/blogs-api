@@ -25,16 +25,19 @@ const login = async (req, res) => {
 const createUser = async (req, res) => {
   const { displayName, email, password, image } = req.body;
   
-  const newUser = await userService.createUser(displayName, email, password, image);
+  try {
+    const newUser = await userService.createUser(displayName, email, password, image);
+    const newUserId = newUser.dataValues.id;
+    
+    const token = jwt.sign({ data: { userId: newUserId } }, secret, jwtConfig);
   
-  if (newUser === 'unique violation') {
-    return res.status(409).send({ message: 'User already registered' });
+    res.status(201).send({ token });
+  } catch (e) {
+    if (e.message === 'user_already_exists') {
+      return res.status(409).send({ message: 'User already registered' });
+    } 
+      return res.sendStatus(500);
   }
-  const newUserId = newUser.dataValues.id;
-  
-  const token = jwt.sign({ data: { userId: newUserId } }, secret, jwtConfig);
-
-  res.status(201).send({ token });
 };
 
 const getAll = async (_req, res) => {
