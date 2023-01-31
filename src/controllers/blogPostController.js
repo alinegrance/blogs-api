@@ -35,6 +35,7 @@ const getPostById = async (req, res) => {
 const updatePost = async (req, res) => {
   const { title, content } = req.body;
   const updatePostBody = { title, content, id: Number(req.params.id) };
+  
   await blogPostService.updatePost(updatePostBody);
  
   req.post.title = title;
@@ -42,9 +43,16 @@ const updatePost = async (req, res) => {
   return res.status(200).send(req.post);
 };
 
+const deletePost = async (req, res) => {
+  const postId = Number(req.params.id);
+  await blogPostService.deletePost(postId);
+  return res.sendStatus(204);
+};
+
 module.exports = {
   createBlogPost,
   getPosts,
   getPostById,
   updatePost,
+  deletePost,
 };

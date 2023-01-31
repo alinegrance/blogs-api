@@ -44,12 +44,12 @@ const validatePostBody = (req, res, next) => {
   next();
 };
 
-const validateUserPermissionToPost = async (req, res, next) => {
+const validateUserPermission = async (req, res, next) => {
   const postId = Number(req.params.id);
   const post = await blogPostService.getPostById(postId);
   if (!post) {
     return res.status(404).send({ 
-      message: 'Post not found', 
+      message: 'Post does not exist', 
     });
   }
   if (post.user.id !== req.user.id) { 
@@ -78,6 +78,6 @@ module.exports = {
   validateNewUser, 
   validateCategoryBody, 
   validatePostBody, 
-  validateUserPermissionToPost,
+  validateUserPermission,
   validateUpdatePostBody,
  };
