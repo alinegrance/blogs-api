@@ -1,5 +1,5 @@
 const { ForeignKeyConstraintError } = require('sequelize');
-const { BlogPost, PostCategory, sequelize } = require('../models');
+const { BlogPost, User, Category, PostCategory, sequelize } = require('../models');
 
 const createBlogPost = async ({ title, content, categoryIds, userId }) => {
   const t = await sequelize.transaction();
@@ -23,6 +23,18 @@ const createBlogPost = async ({ title, content, categoryIds, userId }) => {
   }
 };
 
+const getPosts = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  console.log(posts);
+  return posts;
+};
+
 module.exports = {
   createBlogPost,
+  getPosts,
 };

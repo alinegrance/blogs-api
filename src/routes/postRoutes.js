@@ -1,10 +1,12 @@
 const express = require('express');
 const validateJWT = require('../middlewares/auth/validateJWT');
-const postCrontroller = require('../controllers/blogPostController');
+const postController = require('../controllers/blogPostController');
 const { validatePostBody } = require('../middlewares/validations');
 
 const router = express.Router();
 
-router.post('/', validateJWT, validatePostBody, postCrontroller.createBlogPost);
+router.post('/', validateJWT, validatePostBody, postController.createBlogPost);
+
+router.get('/', validateJWT, postController.getPosts);
 
 module.exports = router;
