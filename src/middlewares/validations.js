@@ -1,3 +1,5 @@
+const blogPostService = require('../services/blogPostService');
+
 const validateLogin = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -42,4 +44,40 @@ const validatePostBody = (req, res, next) => {
   next();
 };
 
-module.exports = { validateLogin, validateNewUser, validateCategoryBody, validatePostBody };
+const validateUserPermissionToPost = async (req, res, next) => {
+  const postId = Number(req.params.id);
+  const post = await blogPostService.getPostById(postId);
+  if (!post) {
+    return res.status(404).send({ 
+      message: 'Post not found', 
+    });
+  }
+  if (post.user.id !== req.user.id) { 
+    return res.status(401).send({
+      message: 'Unauthorized user',
+    });
+  }
+  
+  req.post = post;
+  next();
+};
+
+const validateUpdatePostBody = (req, res, next) => {
+  const { title, content } = req.body;
+  
+  if (!title || !content) {
+    return res.status(400).send({
+      message: 'Some required fields are missing',
+    });
+  }
+  next();
+};
+
+module.exports = { 
+  validateLogin, 
+  validateNewUser, 
+  validateCategoryBody, 
+  validatePostBody, 
+  validateUserPermissionToPost,
+  validateUpdatePostBody,
+ };
