@@ -16,6 +16,13 @@ const createBlogPost = async (req, res) => {
   }
 };
 
+const getByQuery = async (req, res) => {
+  const { q } = req.query;
+  console.log(q);
+  const posts = await blogPostService.getByQuery(q);
+  return res.status(200).send(posts);
+};
+
 const getPosts = async (req, res) => {
   const posts = await blogPostService.getPosts();
   return res.status(200).send(posts);
@@ -55,4 +62,5 @@ module.exports = {
   getPostById,
   updatePost,
   deletePost,
+  getByQuery,
 };

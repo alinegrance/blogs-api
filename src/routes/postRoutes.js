@@ -13,6 +13,8 @@ const validateUpdade = [validateJWT, validateUserPermission, validateUpdatePostB
 
 router.post('/', validateJWT, validatePostBody, postController.createBlogPost);
 
+router.get('/search', validateJWT, postController.getByQuery);
+
 router.get('/', validateJWT, postController.getPosts);
 
 router.get('/:id', validateJWT, postController.getPostById);
